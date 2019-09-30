@@ -14,15 +14,17 @@ app.get('/',  (req,res) => {
 
 io.on('connection', (socket) => {
     console.log('connection detected');
-    io.on('sent message', (msg) => {
+
+    socket.on('sent message', (msg) => {
         console.log('inside sent message event');
         let object = JSON.parse(msg);
-        fs.appendFile('messageLog.txt', 'Name: ' + object.name + ', Message: ' + object.msg, 'utf-8', (err) => {
+        fs.appendFile('messageLog.txt', '\nName: ' + object.name + ', Message: ' + object.msg, 'utf-8', (err) => {
             if (err) {throw err;}
-            console.log('Message Appended successfully');
+            //console.log('Message Appended successfully');
         });
-        console.log('Message : ' + msg);
+        //console.log('Message : ' + msg);
     });
+
     socket.on('disconnect', () => {
         console.log('client disconnected');
     });
