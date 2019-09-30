@@ -1,0 +1,16 @@
+{
+  "name": "assignment9_14011639",
+  "version": "0.0.1",
+  "description": "A simple server that recieves data and saves it to a file.",
+  "main": "index.js",
+  "dependencies": {
+    "express": "^4.17.1",
+    "socket.io": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "u14011639 Delarey Botha",
+  "license": "ISC"
+}

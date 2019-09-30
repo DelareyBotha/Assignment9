@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>IMY Assignment 9</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container">
+    <div>
+        <h1>Assignment 9</h1>
+    </div>
+
+    <form>
+        <div class="form-group">
+            <label for="iName">Name</label>
+            <input type="text" class="form-control" id="iName">
+        </div>
+        <div class="form-group">
+            <label for="iMessage">Message</label>
+            <input type="text" class="form-control" id="iMessage">
+        </div>
+        <button type="submit" class="btn btn-dark">Send</button>
+    </form>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.4.5/socket.io.min.js"></script>
+
+<script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+<script>
+    $(function() {
+        console.log('In script');
+        let socket = io();
+        $('form').submit((x) => {
+            x.preventDefault();
+            let packet = {};
+            let message = $('#iMessage'), name = $('#iName');
+            packet.name = name.val();
+            packet.msg = message.val();
+            let packetString = JSON.stringify(packet);
+
+            socket.emit('sent message', packetString);
+            console.log(packetString);
+            message.val('');
+            return false;
+        });
+    });
+</script>
+
+</body>
+</html>
