@@ -3,7 +3,7 @@ let http = require('http').createServer(app);
 let io = require('socket.io')(http);
 let fs = require('fs');
 
-fs.writeFile('messageLog.txt', 'Messages:', (err) => {
+fs.writeFile('messageLog.json',"[]",  (err) => {
     if(err) {throw err;}
     console.log('File created');
 });
@@ -12,21 +12,29 @@ app.get('/',  (req,res) => {
     res.sendFile(__dirname + '/index.html');
 });
 
+app.get('/messages',  (req,res) => {
+    res.sendFile(__dirname + '/messages.html');
+});
+
 io.on('connection', (socket) => {
-    console.log('connection detected');
+    console.log('New client');
 
     socket.on('sent message', (msg) => {
-        console.log('inside sent message event');
+
         let object = JSON.parse(msg);
-        fs.appendFile('messageLog.txt', '\nName: ' + object.name + ', Message: ' + object.msg, 'utf-8', (err) => {
-            if (err) {throw err;}
-            //console.log('Message Appended successfully');
+        fs.readFile('messageLog.json', (err, data) => {
+            let json = JSON.parse(data);
+            json.push(object);
+            io.emit('update message',json);
+            fs.writeFile("messageLog.json", JSON.stringify(json), (err) => {
+                if(err) {throw err;}
+                console.log('File updated');
+            });
         });
-        //console.log('Message : ' + msg);
     });
 
     socket.on('disconnect', () => {
-        console.log('client disconnected');
+        console.log('client left');
     });
 });
 
