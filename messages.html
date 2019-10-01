@@ -10,17 +10,34 @@
 <body>
 <ul>
 </ul>
-<script>
+<script type="text/javascript">
     $(function() {
         let socket = io();
 
+        socket.on('connect', () => {
+            $('ul').empty();
+            $.getJSON('messageLog.json', (data) => {
+                //console.log('Ajax: ' + data);
+
+                data.forEach((key) => {
+                    let message = '<li>Name: ' + key.name + ', Message: ' + key.msg + '</li>';
+                    $('ul').append(message);
+                });
+            });
+        });
+
+
         socket.on('update message', (msg) => {
-            $('ul').val('');
-            console.log(msg);
+            $('ul').empty();
+            //console.log(msg);
             msg.forEach((key) => {
                 let message = '<li>Name: ' + key.name + ', Message: ' + key.msg + '</li>';
                 $('ul').append(message);
             });
+        });
+
+        socket.on('disconnect', () => {
+            $('ul').empty();
         });
     });
 </script>

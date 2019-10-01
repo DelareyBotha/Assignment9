@@ -5,7 +5,7 @@ let fs = require('fs');
 
 fs.writeFile('messageLog.json',"[]",  (err) => {
     if(err) {throw err;}
-    console.log('File created');
+    console.log('generating messageLog.json');
 });
 
 app.get('/',  (req,res) => {
@@ -16,7 +16,11 @@ app.get('/messages',  (req,res) => {
     res.sendFile(__dirname + '/messages.html');
 });
 
-io.on('connection', (socket) => {
+app.get('/messageLog.json',  (req,res) => {
+    res.sendFile(__dirname + '/messageLog.json');
+});
+
+io.on('connect', (socket) => {
     console.log('New client');
 
     socket.on('sent message', (msg) => {
